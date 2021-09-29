@@ -16,25 +16,20 @@ export async function addPost(
     "Access-Control-Allow-Methods": "OPTIONS,POST",
   };
   try {
-   
+
     return {
       statusCode: 204,
       body: "Email sent",
       headers,
     };
-  } catch (err) {
+  } catch (error: any) {
     console.error("An exception was thrown!");
-    console.error(e.message);
-    console.error(e);
-    const isValidationError = e.name === "ValidationError";
+    console.error(error.message);
+    console.error(error);
+
     return {
-      statusCode: isValidationError ? 400 : 500,
-      body: JSON.stringify({
-        error: format(
-          "Invalid Request. Reason: %s",
-          isValidationError ? e.message : "0"
-        ),
-      }),
+      statusCode: error.statusCode,
+      body: JSON.stringify(error),
       headers,
     };
   }
